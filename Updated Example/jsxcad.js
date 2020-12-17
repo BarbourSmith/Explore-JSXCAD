@@ -28,15 +28,39 @@ orbitDisplay({}, document.getElementById("threeJSDisplay")).then(result=>{
 
 //Test some things
 
+let firstReady = false;
+let secondReady = false;
+
+const computeDifferenceAndDisplay = () => {
+    console.log("First: " + firstReady + " Second: " + secondReady);
+    if(firstReady && secondReady){
+        ask({ key: "difference", readPath1: "atomGeometry/00005", readPath2: "atomGeometry/00002", writePath: "atomGeometry/00006" }).then(result => {
+            ask({ key: "display", readPath: "atomGeometry/00006" }).then(thingReturned => {
+                console.log("Returned: ");
+                console.log(thingReturned);
+                window.updateDisplay(thingReturned);
+            })
+        })
+    }
+}
+
 const runTest = async () => {
-
-    await ask({ key: "rectangle", x:5, y:5, writePath: "atomGeometry/test" });
-    let thingReturned = await ask({ key: "display", readPath: "atomGeometry/test" });
-    console.log("Returned: ");
-    console.log(thingReturned);
-
-    window.updateDisplay(thingReturned);
     
+    ask({ key: "circle", diameter:10, writePath: "atomGeometry/00001" }).then(result => {
+        ask({ key: "extrude", distance:10, readPath: "atomGeometry/00001", writePath: "atomGeometry/00002" }).then(result => {
+            firstReady = true;
+            computeDifferenceAndDisplay();
+        })
+    })
+    
+    ask({ key: "rectangle", x:10, y:10, writePath: "atomGeometry/00003" }).then(result => {
+        ask({ key: "extrude", distance:10, readPath: "atomGeometry/00003", writePath: "atomGeometry/00004" }).then(result => {
+            ask({ key: "translate", x:.2, readPath: "atomGeometry/00004", writePath: "atomGeometry/00005" }).then(result => {
+                secondReady = true;
+                computeDifferenceAndDisplay();
+            })
+        })
+    })
 }
 
 runTest();

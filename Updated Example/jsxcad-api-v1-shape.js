@@ -36,7 +36,7 @@ class Shape {
     return Shape.fromOpenPath(concatenate(...paths));
   }
 
-  constructor(geometry = taggedAssembly({}), context) {
+  constructor(geometry, context) {
     if (geometry.geometry) {
       throw Error('die: { geometry: ... } is not valid geometry.');
     }

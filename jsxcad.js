@@ -1,4 +1,4 @@
-import { askService, listFiles, deleteFile } from './jsxcad-sys.js';
+import { askService, listFiles, deleteFile, setupFilesystem } from './jsxcad-sys.js';
 import { buildMeshes, orbitDisplay } from './jsxcad-ui-threejs.js';
 
 
@@ -25,6 +25,7 @@ orbitDisplay({}, document.getElementById("threeJSDisplay")).then(result=>{
     window.updateDisplay = result.updateGeometry
 });
 
+setupFilesystem({ fileBase: 'foop' });
 
 //Garbage collection...for now just delete everything
 const garbageCollection = async () => {
@@ -68,6 +69,8 @@ const runTest = async () => {
         })
     })
 }
+
+setupFilesystem({ fileBase: 'foop' });
 
 garbageCollection();
 

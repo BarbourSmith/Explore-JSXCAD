@@ -107,6 +107,8 @@ const reportError = error => {
 
 setPendingErrorHandler(reportError);
 
+setupFilesystem({ fileBase: 'foop' });
+
 const agent = async ({
   ask,
   question
